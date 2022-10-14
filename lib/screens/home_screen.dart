@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 30),
+                  padding: const EdgeInsets.only(bottom: 30),
                   height: getHeight(context) * 0.70,
                   width: getWidth(context),
                   child: PageView(

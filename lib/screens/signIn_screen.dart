@@ -125,8 +125,8 @@ class _SignState extends State<Sign> {
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => Verify()
       ));
-            /*              final mobile = phoneController.text.trim();
-           sendOtp(mobile,context);*/
+                          final mobile = phoneController.text.trim();
+           sendOtp(mobile,context);
 
      // api set
  /*   setState(() {

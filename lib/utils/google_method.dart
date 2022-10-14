@@ -43,19 +43,18 @@ loginGoogleApi(BuildContext context) async {
   var response = await apiLoginGoogle(context, '112373434782800182798');
 
   print(response!.status.toString());
-  if (response.status == "1") {
-    if (response.data != null) {
-      if (response.data!.name == null || response.data!.dob == null ||
+  if (response.status == 200) {
+   if (response.data != null) {
+      if (response.data!.name == null ||
+          response.data!.dob == null ||
           response.data!.gender == null ||
           response.data!.governmentId == null ||
           response.data!.biography == null) {
-        Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (BuildContext context) => const BasicInformation()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => const BasicInformation()));
       } else {
-        Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (BuildContext context) => const MyHome()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => const MyHome()));
       }
     }
   }

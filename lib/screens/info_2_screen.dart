@@ -74,6 +74,7 @@ class _InfoState extends State<Info> {
          children: <Widget>[
 
 
+
          Container(
            margin: EdgeInsets.only(top: 10),
            height: 140,width: 140,
@@ -81,6 +82,7 @@ class _InfoState extends State<Info> {
              children: [
                Align(alignment:Alignment.center,
                child:
+
                Image.asset("assets/plus.png",height: 50,width: 50,),),
                const Text(CommonString.addMore,style: TextStyle(
                  color: MyColor.greyDark,
