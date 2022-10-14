@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.transparent,
         body: Container(
             padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-            height: getHeight(context),
-            width: getWidth(context),
+            height: double.infinity,
+            width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const SecondScreen()));
+                                    const JoinNow()));
                           },
                           child: Container(
                             height: getHeight(context) * 0.07,

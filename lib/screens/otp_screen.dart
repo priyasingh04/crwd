@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -6,6 +7,7 @@ import '../utils/colors.dart';
 import '../utils/common_method.dart';
 import '../utils/strings.dart';
 import 'info_screen.dart';
+import 'my_home_screen.dart';
 class Verify extends StatefulWidget {
   const Verify({Key? key}) : super(key: key);
 
@@ -24,6 +26,7 @@ class _VerifyState extends State<Verify> {
     child: Image.asset("assets/toolbar_bg.png",fit: BoxFit.cover,),
     ),
     Scaffold(
+        resizeToAvoidBottomInset: false,
     backgroundColor: Colors.transparent,
     appBar: AppBar(
     backgroundColor: Colors.transparent,
@@ -142,9 +145,11 @@ class _VerifyState extends State<Verify> {
                 content: Text(CommonString.pleaseEnterOTP),
               ));}
         else{
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) =>
-              const BasicInformation()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=> BasicInformation()));
+          //verify otp
+       /*   final otp = otpController.toString();
+          final verificationId ='';
+          _verifyOTP(otp,verificationId);*/
         }
       },
       child:
@@ -179,5 +184,16 @@ class _VerifyState extends State<Verify> {
       ),
     )
      ))]);
+  }
+  void _verifyOTP(String otp,String verificationId) {
+    /// get the `smsCode` from the user
+    String smsCode = otp;
+
+    /// when used different phoneNumber other than the current (running) device
+    /// we need to use OTP to get `phoneAuthCredential` which is inturn used to signIn/login
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
+
+    const MyHome();
   }
 }

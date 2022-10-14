@@ -36,6 +36,7 @@ class _BasicInformationState extends State<BasicInformation> {
     child: Image.asset("assets/toolbar_bg.png",fit: BoxFit.cover,),
     ),
     Scaffold(
+        resizeToAvoidBottomInset: false,
     backgroundColor: Colors.transparent,
     appBar: AppBar(
     backgroundColor: Colors.transparent,

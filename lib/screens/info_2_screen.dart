@@ -72,51 +72,7 @@ class _InfoState extends State<Info> {
          primary: false,
        padding: const EdgeInsets.all(10),
          children: <Widget>[
-    Stack(
- children: [
-   Image.asset("assets/man_image1.png",height: 140,width: 140,),
-   Positioned(
-     right: 6.5,
-      top: 0,
-       child:  Image.asset("assets/close.png",height: 30,width: 30,),)
- ],
-    ),
-      Stack(
-        children: [
-          Image.asset("assets/man_image2.png",height: 140,width: 140,),
-          Positioned(
-            right: 6.5,
-            top: 0,
-            child:  Image.asset("assets/close.png",height: 30,width: 30,),)
-        ],
-      ),
-      Stack(
-        children: [
-          Image.asset("assets/man_image3.png",height: 140,width: 140,),
-          Positioned(
-            right: 6.5,
-            top: 0,
-            child:  Image.asset("assets/close.png",height: 30,width: 30,),)
-        ],
-      ),
-           Stack(
-             children: [
-               Image.asset("assets/man_image4.png",height: 140,width: 140,),
-               Positioned(
-                 right: 6.5,
-                 top: 0,
-                 child:  Image.asset("assets/close.png",height: 30,width: 30,),)
-             ],
-           ),
-           Stack(
-             children: [
-               Image.asset("assets/man_image1.png",height: 140,width: 140,),
-               Positioned(
-                 right: 6.5,
-                 top: 0,
-                 child:  Image.asset("assets/close.png",height: 30,width: 30,),)
-             ],
-           ),
+
 
          Container(
            margin: EdgeInsets.only(top: 10),

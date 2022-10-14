@@ -1,16 +1,15 @@
 import 'package:crwd/screens/otp_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-import '../api/api_call.dart';
 import '../utils/colors.dart';
 import '../utils/common_method.dart';
 import '../utils/google_method.dart';
+import '../utils/send_otp_method.dart';
 import '../utils/strings.dart';
-import 'first_screen.dart';
-import 'my_home_screen.dart';
 
 
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class _SignState extends State<Sign> {
   @override
   void initState() {
     super.initState();
-
+    Firebase.initializeApp();
 
   }
   @override
@@ -34,19 +33,7 @@ class _SignState extends State<Sign> {
     super.dispose();
   }
 
-  loginPhoneApi() async {
-    var response = await apiLoginPhone(phoneController.text.toString(),
-        context);
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.message.toString()),
-        ));
-    if (response.status == "1") {
 
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => const Verify()));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +47,7 @@ class _SignState extends State<Sign> {
         ),
       ),
       Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
               toolbarHeight: 90,
@@ -134,8 +122,13 @@ class _SignState extends State<Sign> {
     content: Text(CommonString.pleaseEnterName                    ),
     ));}
                         else{
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => const Verify()));
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => Verify()
+      ));
+            /*              final mobile = phoneController.text.trim();
+           sendOtp(mobile,context);*/
+
+     // api set
  /*   setState(() {
     isLoading = true;
     });
