@@ -193,16 +193,5 @@ class _SignState extends State<Sign> {
               )))
     ]);
   }
- /* loginGoogleApi() async {
-    var response = await apiLoginGoogle('112373434782800182798');
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.message.toString()),
-        ));
-    if (response!.status == "1") {
 
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => const MyHome()));
-    }
-  }*/
 }

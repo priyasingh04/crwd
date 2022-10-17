@@ -2,9 +2,11 @@ import 'package:crwd/screens/info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_call.dart';
 import '../api/api_model.dart';
+import '../screens/info_2_screen.dart';
 import '../screens/my_home_screen.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -43,17 +45,38 @@ loginGoogleApi(BuildContext context) async {
   var response = await apiLoginGoogle(context, '112373434782800182798');
 
   print(response!.status.toString());
-  if (response.status == 200) {
+   if (response.status == 200) {
+     final SharedPreferences pref = await SharedPreferences.getInstance();
+     pref.setString("fullName",response.data!.name.toString(),);
+     pref.setString("userid",response.data!.id.toString(),);
+     pref.setString("isLogin","1");
+     pref.setString("seassionid",response.data!.sessionId.toString(),);
+     pref.setString("dob",response.data!.dob.toString(),);
+     pref.setString("gender", response.data!.gender.toString(),);
+     pref.setString("governmentId", response.data!.governmentId.toString(),);
+     pref.setString("bio", response.data!.biography.toString(),);
    if (response.data != null) {
-      if (response.data!.name == null ||
+     if (response.data!.name == null ||
           response.data!.dob == null ||
           response.data!.gender == null ||
           response.data!.governmentId == null ||
           response.data!.biography == null) {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => const BasicInformation()));
-      } else {
-        Navigator.of(context).push(MaterialPageRoute(
+      }else if (response.data!.name!.isEmpty ||
+          response.data!.dob!.isEmpty ||
+          response.data!.gender!.isEmpty ||
+          response.data!.governmentId!.isEmpty ||
+          response.data!.biography!.isEmpty) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => const BasicInformation()));
+      }
+     else if(response.data!.images==null || response.data!.images!.isEmpty){
+       Navigator.of(context).pushReplacement(MaterialPageRoute(
+           builder: (BuildContext context) => const Info()));
+     }
+      else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => const MyHome()));
       }
     }

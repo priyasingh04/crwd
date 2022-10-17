@@ -4,6 +4,9 @@ import 'package:crwd/screens/first_screen.dart';
 import 'package:crwd/screens/home_screen.dart';
 import 'package:crwd/utils/common_method.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'my_home_screen.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -11,19 +14,34 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+Future<SharedPreferences> _prefs=SharedPreferences.getInstance();
+
 class _SplashScreenState extends State<SplashScreen> {
+  var isLoading ;
+
+
+
+
 
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) => const HomeScreen()
-            )
-        )
-    );
-  }
+    /*if(isLoading= ){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHome()));
+    }else {
+      () {*/
+      Timer(const Duration(seconds: 5),
+              () =>
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder:
+                      (context) => const HomeScreen()
+                  )
+              )
+      );
+    }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(

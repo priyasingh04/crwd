@@ -53,19 +53,7 @@ Future<LoginModel?> apiLoginGoogle(
   jsonResponse = json.decode(response.body);
   var loginModel = LoginModel.fromJson(jsonResponse);
   if (response.statusCode == 200) {
-   /* if (loginModel.data != null) {
-      if (loginModel.data!.name == null ||
-          loginModel.data!.dob == null ||
-          loginModel.data!.gender == null ||
-          loginModel.data!.governmentId == null ||
-          loginModel.data!.biography == null) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const BasicInformation()));
-      } else {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const MyHome()));
-      }
-    }*/
+
 
     return loginModel;
   } else if (response.statusCode == 401) {
@@ -73,6 +61,40 @@ Future<LoginModel?> apiLoginGoogle(
     throw Exception("Failed to load the work experience!");
   }
 }
+
+
+Future<LoginModel?> apiUpdateProfile(
+    String? sessionid ,
+    String? userid,
+    ) async {
+  String username = 'crwd';
+  String password = 'Q1JXRCBjcmVhdGVkIGJ5IGNoYW5kYW4';
+  String basicAuth =
+      'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+  var response = await http.post(
+    Uri.parse('http://50.17.68.62/crwd/api/updateProfile'),
+    headers: {'authorization': basicAuth,'sessionid':sessionid.toString(),'userid':userid.toString()},
+    body: {
+      'name': 'Quality Analyst',
+      'dob': '',
+      'phone_number': '',
+      'biography': 'hvhfjgm',
+      'age': '',
+      'gender': 'female',
+    },
+  );
+
+  print(response.body);
+ var jsonResponse = json.decode(response.body);
+  var loginModel = LoginModel.fromJson(jsonResponse);
+  if (response.statusCode == 200) {
+    return loginModel;
+  } else if (response.statusCode == 401) {
+  } else {
+    throw Exception("Failed to load the work experience!");
+  }
+}
+
 
 // login with phone this api hit button
 /* loginPhoneApi() async {
