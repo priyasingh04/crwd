@@ -302,9 +302,10 @@ class _BasicInformationState extends State<BasicInformation> {
   updateProfile(BuildContext context) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     var response = await apiUpdateProfile(
-        pref.getString("seassionid"), pref.getString("userid"));
+        pref.getString("sessionid"), pref.getString("userid"));
     debugPrint(response!.status.toString());
     if (response.status == 200) {
+      pref.setString("isLogin", "2");
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (BuildContext context) => const Info()));
     }

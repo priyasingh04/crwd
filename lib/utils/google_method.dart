@@ -50,11 +50,12 @@ loginGoogleApi(BuildContext context) async {
      pref.setString("fullName",response.data!.name.toString(),);
      pref.setString("userid",response.data!.id.toString(),);
      pref.setString("isLogin","1");
-     pref.setString("seassionid",response.data!.sessionId.toString(),);
+     pref.setString("sessionid",response.data!.sessionId.toString(),);
      pref.setString("dob",response.data!.dob.toString(),);
      pref.setString("gender", response.data!.gender.toString(),);
      pref.setString("governmentId", response.data!.governmentId.toString(),);
      pref.setString("bio", response.data!.biography.toString(),);
+     pref.setString("images", response.data!.images.toString(),);
    if (response.data != null) {
      if (response.data!.name == null ||
           response.data!.dob == null ||

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:crwd/api/api_category_model.dart';
 import 'package:crwd/screens/info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
 
 import '../screens/my_home_screen.dart';
 import 'api_model.dart';
@@ -95,6 +97,50 @@ Future<LoginModel?> apiUpdateProfile(
   }
 }
 
+
+Future<LoginModel> apiUpdateUserImages(
+    String sessionid ,
+    String userid,
+    String profile_picture
+    ) async {
+  String username = 'crwd';
+  String password = 'Q1JXRCBjcmVhdGVkIGJ5IGNoYW5kYW4';
+  String basicAuth =
+      'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+  var request = http.MultipartRequest(
+      'POST', Uri.parse('http://50.17.68.62/crwd/api/updateUserImages'));
+  String mimes = lookupMimeType(profile_picture).toString();
+  print("mimes: $mimes");
+  var mm = mimes.split("/");
+
+  var headers={'authorization': basicAuth,'sessionid':sessionid,'userid':userid};
+  request.headers.addAll(headers);
+  request.files.add(await http.MultipartFile.fromPath(
+    "profile_picture",
+    profile_picture,
+  ));
+  http.StreamedResponse response = await request.send();
+  var jsonResponse = jsonDecode(await response.stream.bytesToString());
+  return LoginModel.fromJson(jsonResponse);
+}
+
+
+Future<CategoryModel> apiEventCategory(
+    String user_id,
+    BuildContext context,
+    ) async {
+  var request = http.MultipartRequest(
+      'GET', Uri.parse('http://50.17.68.62/crwd/api/getEventCategory'));
+  request.fields.addAll({
+    'user_id': user_id,
+    'search': 'party',
+
+  });
+
+  http.StreamedResponse response = await request.send();
+  var jsonResponse = jsonDecode(await response.stream.bytesToString());
+  return CategoryModel.fromJson(jsonResponse);
+}
 
 // login with phone this api hit button
 /* loginPhoneApi() async {

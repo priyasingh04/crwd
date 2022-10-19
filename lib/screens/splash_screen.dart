@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:crwd/screens/first_screen.dart';
 import 'package:crwd/screens/home_screen.dart';
+import 'package:crwd/screens/info_2_screen.dart';
 import 'package:crwd/utils/common_method.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'info_screen.dart';
 import 'my_home_screen.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,32 +16,52 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-Future<SharedPreferences> _prefs=SharedPreferences.getInstance();
+
 
 class _SplashScreenState extends State<SplashScreen> {
   var isLoading ;
-
-
+  Future<SharedPreferences> _prefs=SharedPreferences.getInstance();
+  var isLogin="";
 
 
 
   @override
   void initState() {
+    getUserDetails();
     super.initState();
-    /*if(isLoading= ){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHome()));
-    }else {
-      () {*/
+
       Timer(const Duration(seconds: 5),
-              () =>
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder:
-                      (context) => const HomeScreen()
-                  )
-              )
+              () {
+
+                if(isLogin=="1"){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context) =>  BasicInformation()
+                      )
+                  );
+
+                }else if(isLogin=="2"){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context) =>  Info()
+                      )
+                  );
+                }else{
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context) => const HomeScreen()
+                      )
+                  );
+                }
+              }
+
       );
     }
 
+      getUserDetails()async{
+    SharedPreferences _data=await _prefs;
+    isLogin=_data.getString("isLogin").toString();
+      }
 
 
   @override

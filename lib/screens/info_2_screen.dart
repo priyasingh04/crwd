@@ -1,7 +1,10 @@
 import 'package:crwd/api/api_call.dart';
+import 'package:crwd/screens/info_3_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:mime/mime.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import '../utils/colors.dart';
 import '../utils/common_method.dart';
 import '../utils/strings.dart';
@@ -16,6 +19,7 @@ class Info extends StatefulWidget {
 
 class _InfoState extends State<Info> {
   List<File> images = [];
+
 
   Future _imagePick(ImageSource source) async {
     var image = await ImagePicker().pickImage(source: source);
@@ -90,23 +94,32 @@ class _InfoState extends State<Info> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                            mainAxisSpacing: 5,),
+                            mainAxisSpacing: 15,
+                            crossAxisSpacing: 15),
                         itemBuilder: (context, index) {
                           return
                           Stack(children:[
                             Container(
                             height: 140,
                             width: 140,
-                            child: Image.file(
-                              File(
-                                images[index]!.path,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius:BorderRadius.circular(20)
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              clipBehavior:  Clip.antiAliasWithSaveLayer,
+                              child: Image.file(
+                                File(
+                                  images[index]!.path,
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
                           ),
                             Positioned(
-                            top: -1,
-                                right: -1,
+                            top: 0,
+                               right: 0,
 
                                 child: InkWell(onTap:(){
                                   setState(() {
@@ -115,10 +128,12 @@ class _InfoState extends State<Info> {
                                 },child:Image.asset("assets/close.png")))
                           ]
                           );
+
+
                         },
                       ),
                     ),
-                    Padding(padding: const EdgeInsets.only(bottom: 150),child:
+
                     GestureDetector(
                         onTap: () {
                           _showPicker(context, 1);
@@ -145,8 +160,8 @@ class _InfoState extends State<Info> {
                                       fontFamily: "Raleway",
                                     ))
                               ],
-                            )))),
- const Padding(padding: EdgeInsets.only(bottom: 150),
+                            ))),
+ const Padding(padding: EdgeInsets.only(bottom: 5),
                    child: Text(
                       CommonString.pleaseAddAtLeast,
                       style: TextStyle(
@@ -159,7 +174,7 @@ class _InfoState extends State<Info> {
                     ),),
 
 
-    const Padding(padding: EdgeInsets.only(bottom: 120),
+    const Padding(padding: EdgeInsets.only(bottom: 60),
     child:
                     Text(
                       CommonString.withNobodyElsePicture,
@@ -169,10 +184,14 @@ class _InfoState extends State<Info> {
                         fontWeight: FontWeight.w500,
                         fontFamily: "Raleway",
                       ),
-                      textAlign: TextAlign.center,
-                    ),),
-                    GestureDetector(
-                      onTap: (){},
+                      textAlign: TextAlign.center,),
+    ),
+ Padding(padding: EdgeInsets.only(bottom: 120),
+
+                 child:  GestureDetector(
+                      onTap: (){
+                        updateUserImages( context, 1 );
+                      },
                       child:
 
                       Container(
@@ -200,7 +219,7 @@ class _InfoState extends State<Info> {
                         ),
                       ),),
 
-                  ]))))
+ ) ]))))
     ]);
   }
 
@@ -233,8 +252,25 @@ class _InfoState extends State<Info> {
           );
         });
   }
+  updateUserImages(BuildContext context, int index) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    print(pref.getString("sessionid").toString(),);
+    print(pref.getString("userid").toString(),);
+    var response = await apiUpdateUserImages(
+        pref.getString("sessionid").toString(),
+        pref.getString("userid").toString(),
+        images[index].path);
 
-
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.message.toString()),
+        ));
+    print( response.message.toString());
+    if (response.status == 200) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => const BasicInfoThree()));
+    }
+  }
      }
 
 
