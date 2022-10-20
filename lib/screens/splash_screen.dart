@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:crwd/screens/first_screen.dart';
+
 import 'package:crwd/screens/home_screen.dart';
 import 'package:crwd/screens/info_2_screen.dart';
 import 'package:crwd/utils/common_method.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'info_3_screen.dart';
 import 'info_screen.dart';
-import 'my_home_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -36,17 +37,24 @@ class _SplashScreenState extends State<SplashScreen> {
                 if(isLogin=="1"){
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder:
-                          (context) =>  BasicInformation()
+                          (context) =>  const BasicInformation()
                       )
                   );
 
                 }else if(isLogin=="2"){
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder:
-                          (context) =>  Info()
+                          (context) =>  const Info()
                       )
                   );
-                }else{
+                }else if(isLogin=="3"){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context) =>  const BasicInfoThree()
+                      )
+                  );
+                }
+                else{
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder:
                           (context) => const HomeScreen()

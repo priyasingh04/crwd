@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crwd/api/api_call.dart';
+import 'package:crwd/screens/my_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +9,8 @@ import '../api/api_category_model.dart';
 import '../utils/colors.dart';
 import '../utils/common_method.dart';
 import '../utils/strings.dart';
+
+
 
 class BasicInfoThree extends StatefulWidget {
   const BasicInfoThree({Key? key}) : super(key: key);
@@ -18,6 +21,8 @@ class BasicInfoThree extends StatefulWidget {
 
 class _BasicInfoThreeState extends State<BasicInfoThree> {
   List<CategoryDataModel> _list = [];
+  bool pressAttention = false;
+  Color _colorContainer = Colors.white;
 
   @override
   void initState() {
@@ -25,10 +30,6 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
        getEventCategory();
   }
 
-  String name = "";
-  String color = "";
-  String icon = "";
-  String id = "";
 
   @override
   Widget build(BuildContext context) {
@@ -100,27 +101,31 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
                                 height: 140,
                                 width: 140,
                                 decoration: BoxDecoration(
-                                    color: Colors.grey,
+                                    color:Colors.grey,
+                                   /* Color(int.parse(_list[index].color.toString(),radix: 16)) ,*/
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     Image(
                                       image: NetworkImage(mBaseMedia +
                                           _list[index].icon.toString()),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 32,
                                     ),
                                     InkWell(
-                                        onTap: () {},
+
+                                        onTap: () {
+},
                                         child: Container(
                                             height: 38,
                                             width: 120,
-                                            decoration: const BoxDecoration(
-                                              gradient: LinearGradient(
+                                            decoration: BoxDecoration(
+                                              color: _colorContainer ,
+                                              gradient: const LinearGradient(
                                                 begin: Alignment.topCenter,
                                                 end: Alignment.bottomCenter,
                                                 colors: [
@@ -128,15 +133,15 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
                                                   MyColor.yellow,
                                                 ],
                                               ),
-                                              borderRadius: BorderRadius.all(
+                                              borderRadius: const BorderRadius.all(
                                                   Radius.circular(10)),
                                             ),
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Text(
                                                _list[index].name.toString(),
-                                                style: TextStyle(
-                                                  color: MyColor.white,
+                                                style: const TextStyle(
+                                                  color: MyColor.black,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
                                                   fontFamily: "Raleway",
@@ -147,13 +152,15 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
                                 ),
                               );
                             })),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Padding(
-                        padding: EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 50),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            updateCategory( context,  1);
+                          },
                           child: Container(
                             height: getHeight(context) * 0.07,
                             width: getWidth(context) * 0.80,
@@ -180,7 +187,7 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
                             ),
                           ),
                         )),
-                    Padding(
+                    const Padding(
                         padding: EdgeInsets.only(bottom: 30),
                         child: Text(
                           CommonString.step3,
@@ -201,7 +208,7 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
       pref.getString("userid").toString(),
     );
     var response =
-        await apiEventCategory(pref.getString("userid").toString(), context);
+        await apiEventCategory(pref.getString("userid").toString());
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(response.message.toString()),
     ));
@@ -212,6 +219,31 @@ class _BasicInfoThreeState extends State<BasicInfoThree> {
         _list = response.data!;
         print("GET_EVENT $_list!");
       });
+    } else(){
+      print("Api error");
+    };
+  }
+
+  updateCategory(BuildContext context, int index) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    print(pref.getString("sessionid").toString(),);
+    print(pref.getString("userid").toString(),);
+    var response = await apiUpdateCategory(
+        pref.getString("sessionid").toString(),
+        pref.getString("userid").toString(),
+        _list[index].name.toString());
+
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response!.message.toString()),
+        ));
+    print( response.message.toString());
+    if (response.status == 200) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => const MyHome()));
     }
   }
 }
+
+

@@ -49,6 +49,7 @@ loginGoogleApi(BuildContext context) async {
      final SharedPreferences pref = await SharedPreferences.getInstance();
      pref.setString("fullName",response.data!.name.toString(),);
      pref.setString("userid",response.data!.id.toString(),);
+     pref.setString("interest",response.data!.id.toString(),);
      pref.setString("isLogin","1");
      pref.setString("sessionid",response.data!.sessionId.toString(),);
      pref.setString("dob",response.data!.dob.toString(),);

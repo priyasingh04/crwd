@@ -123,7 +123,7 @@ class _SignState extends State<Sign> {
     ));}
                         else{
       Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => Verify()
+          builder: (context) => const Verify()
       ));
                           final mobile = phoneController.text.trim();
            sendOtp(mobile,context);

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crwd/api/api_category_model.dart';
 import 'package:crwd/screens/info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:mime/mime.dart';
 
 import '../screens/my_home_screen.dart';
@@ -77,12 +79,12 @@ Future<LoginModel?> apiUpdateProfile(
     Uri.parse('http://50.17.68.62/crwd/api/updateProfile'),
     headers: {'authorization': basicAuth,'sessionid':sessionid.toString(),'userid':userid.toString()},
     body: {
-      'name': 'Quality Analyst',
+      'name': ' ',
       'dob': '',
       'phone_number': '',
-      'biography': 'hvhfjgm',
+      'biography': '',
       'age': '',
-      'gender': 'female',
+      'gender': '',
     },
   );
 
@@ -124,23 +126,52 @@ Future<LoginModel> apiUpdateUserImages(
   return LoginModel.fromJson(jsonResponse);
 }
 
-
 Future<CategoryModel> apiEventCategory(
-    String user_id,
-    BuildContext context,
+    String user_id
     ) async {
-  var request = http.MultipartRequest(
-      'GET', Uri.parse('http://50.17.68.62/crwd/api/getEventCategory'));
-  request.fields.addAll({
-    'user_id': user_id,
-    'search': 'party',
+  String username = 'crwd';
+  String password = 'Q1JXRCBjcmVhdGVkIGJ5IGNoYW5kYW4';
+  String basicAuth =
+      'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+  Response response = await http.get(
+      Uri.parse('http://50.17.68.62/crwd/api/getEventCategory?user_id=$user_id'),
+      headers: {
+        HttpHeaders.authorizationHeader: basicAuth,
+      });
 
-  });
-
-  http.StreamedResponse response = await request.send();
-  var jsonResponse = jsonDecode(await response.stream.bytesToString());
+  var jsonResponse = jsonDecode(response.body);
   return CategoryModel.fromJson(jsonResponse);
 }
+
+Future<LoginModel?> apiUpdateCategory(
+    String? sessionid ,
+    String? userid,
+    String interest
+    ) async {
+  String username = 'crwd';
+  String password = 'Q1JXRCBjcmVhdGVkIGJ5IGNoYW5kYW4';
+  String basicAuth =
+      'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+  var response = await http.post(
+    Uri.parse('http://50.17.68.62/crwd/api/updateProfile'),
+    headers: {'authorization': basicAuth,'sessionid':sessionid.toString(),'userid':userid.toString()},
+    body: {
+
+      'interest': interest,
+    },
+  );
+
+  print(response.body);
+  var jsonResponse = json.decode(response.body);
+  var loginModel = LoginModel.fromJson(jsonResponse);
+  if (response.statusCode == 200) {
+    return loginModel;
+  } else if (response.statusCode == 401) {
+  } else {
+    throw Exception("Failed to load the work experience!");
+  }
+}
+
 
 // login with phone this api hit button
 /* loginPhoneApi() async {
